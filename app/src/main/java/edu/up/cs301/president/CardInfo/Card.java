@@ -4,61 +4,95 @@ import java.io.Serializable;
 
 public class Card implements Serializable {
 
-    public enum Suit{
-        DIAMONDS,
-        SPADES,
-        CLUBS,
-        HEARTS;
+    /** Descriptive variable for the card */
+    /* 0-7: numbers 8: Jack, 9: Queen, 10: King, 11: A, 12: 2 */
+    private int cardVal;
 
-        public static final int NUM_SUITS = 4;
+    /** Card suit */
+    /* Types: Spades, Hearts, Diamonds, Clubs */
+    private String cardSuit;
 
-        @Override
-        public String toString() { return this.name(); }
+    /**
+     * Card constructor
+     * initializes values of card depending on parameters
+     * @param cardVal descriptive integer value of card
+     * @param cardSuit card's suit
+     */
+    public Card(int cardVal, String cardSuit){
+        this.cardVal = cardVal;
+        this.cardSuit = cardSuit;
     }
 
-    public enum Rank {
-        THREE(1),
-        FOUR(2),
-        FIVE(3),
-        SIX(4),
-        SEVEN(5),
-        EIGHT(6),
-        NINE(7),
-        TEN(8),
-        JACK(9),
-        QUEEN(10),
-        KING(11),
-        ACE(12),
-        TWO(13);
-
-        public static final int NUM_RANK = 13;
-        private int rankVal;
-
-        Rank(int rankVal) { this.rankVal = rankVal; }
-
-        public int getValue() { return rankVal; }
-        public void setValue(int val) { rankVal = val; }
-
-        public String toString() { return this.name(); }
+    /** Setter / Getter for Card value specifically for
+     *  the trade function
+     */
+    public void setCardVal(int cardVal) {
+        this.cardVal = cardVal;
     }
 
-    private Suit suit;
-    private Rank rank;
-
-    public Card(Suit s, Rank r){
-        suit = s;
-        rank = r;
+    public void setCardSuit(String cardSuit) {
+        this.cardSuit = cardSuit;
     }
 
-    public Card(Card orig){
-        suit = orig.getSuit();
-        rank = orig.getRank();
+    /** Returns the card's value */
+    public int getValue() { return cardVal; }
+
+    /** Returns the card's suit */
+    public String getSuit() { return cardSuit; }
+
+
+
+
+    /**
+     * getFace
+     * returns the string of card value
+     * @return String of Card Value
+     */
+    public String getFace(){
+        int nameOfCard = this.cardVal;
+        if(nameOfCard == 1){
+            return "Three";
+        }
+        else if(nameOfCard == 2){
+            return "Four";
+        }
+        else if(nameOfCard == 3){
+            return "Five";
+        }
+        else if(nameOfCard == 4){
+            return "Six";
+        }
+        else if(nameOfCard == 5){
+            return "Seven";
+        }
+        else if(nameOfCard == 6){
+            return "Eight";
+        }
+        else if(nameOfCard == 7){
+            return "Nine";
+        }
+        else if(nameOfCard == 8){
+            return "Ten";
+        }
+        else if(nameOfCard == 9){
+            return "Jack";
+        }
+        else if(nameOfCard == 10) {
+            return "Queen";
+        }
+        else if(nameOfCard == 11){
+            return "King";
+        }
+        else if(nameOfCard == 12){
+            return "Ace";
+        }
+        else if(nameOfCard == 13){
+            return "Two";
+        }
+        return null;
     }
 
-    public Suit getSuit() { return suit; }
+    /** Returns card name and suit */
+    public String getCardName() { return this.getFace() + "_" + this.getSuit(); }
 
-    public Rank getRank() { return rank; }
-
-    //TODO: Citation needed
-    //https://stackoverflow.com/questions/23329132/building-a-deck-of-cards-in-java-using-2-different-enums
 }

@@ -63,10 +63,16 @@ public class PresidentState extends GameState {
 
     public PresidentState(PresidentState orig, int idx) {
         deck = orig.deck;
-        currentSet = orig.currentSet;
+        currentSet = new ArrayList<>(orig.currentSet);
         turn = orig.turn;
+
     }
 
+    public PresidentState(PresidentState orig){
+        currentSet = orig.currentSet;
+        turn = orig.turn;
+        players = getPlayers();
+    }
     /**
      * startRound
      * if players got rid of hand
@@ -294,10 +300,6 @@ public class PresidentState extends GameState {
         }
     }
 
-    public void play(int idx){
-        Card temp = players.get(idx).getHand().remove(0); // TODO need to remove by what player selects
-        currentSet.add(temp);
-        nextPlayer();
-    }
+    public void setCurrentSet( ArrayList<Card> in) { currentSet = in; }
 
 }

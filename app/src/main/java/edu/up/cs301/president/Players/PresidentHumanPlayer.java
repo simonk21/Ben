@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import edu.up.cs301.animation.AnimationSurface;
 import edu.up.cs301.game.GameHumanPlayer;
 import edu.up.cs301.game.GameMainActivity;
@@ -61,12 +63,13 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
     private ImageButton currentSet;
 
     private ImageButton selectedCard;
+    private Card cardToPlay;
 
 
     /**
      * constructor
-     * @param name
-     * 		the player's name
+     *
+     * @param name the player's name
      */
     public PresidentHumanPlayer(String name) {
         super(name);
@@ -75,8 +78,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
     /**
      * Returns the GUI's top view object
      *
-     * @return
-     * 		the top object in the GUI's view heirarchy
+     * @return the top object in the GUI's view heirarchy
      */
     public View getTopView() {
         return myActivity.findViewById(R.id.in_game_gui);
@@ -86,7 +88,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
      * sets the counter value in the text view
      */
     protected void updateDisplay() { // TODO: how to access human player's idx
-        switch(this.state.getTurn()) {
+        switch (this.state.getTurn()) {
             case 0:
                 switchHighlight(0);
                 break;
@@ -106,47 +108,49 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
      * this method gets called when the user clicks the '+' or '-' button. It
      * creates a new CounterMoveAction to return to the parent activity.
      *
-     * @param button
-     * 		the button that was clicked
+     * @param button the button that was clicked
      */
     public void onClick(View button) {
         // if we are not yet connected to a game, ignore
         if (game == null) return;
         // TODO issue is that the state is never updated by the localgame stuff
+        ArrayList<Card> play = new ArrayList<>();
+        Card toAdd = new Card(0, null);
+        for (int i = 0; i < play.size(); i++) {
+            play.remove(0);
+        }
         // if i change stuff on here then it works
         // Construct the action and send it to the game
         GameAction action = null;
         if (button.getId() == R.id.playButton) {
             // play button: player will put down cards
-            action = new PresidentPlayAction(this);
-           // state.play(0); // TODO change depending on player's idx
+            ArrayList<Card> temp = new ArrayList<Card>();
+            temp.add(getGUICard());
+            game.sendAction(new PresidentPlayAction(this, temp)); // TODO change
+            // state.play(0); // TODO change depending on player's idx
 //            int id = getImageId(state.getCurrentSet().get(0));
 //            currentSet.setTag(Integer.valueOf(id)); // TODO places the card on currentset
 //            currentSet.setBackgroundResource(id); // TODO need to update
-        }
-        else if (button.getId() == R.id.passButton) {
+        } else if (button.getId() == R.id.passButton) {
             // pass button: player will not put down cards
             action = new PresidentPassAction(this);
-           // state.pass(0); // TODO need to change like in play
-        }
-        else if (button.getId() == R.id.orderButton) {
+            // state.pass(0); // TODO need to change like in play
+        } else if (button.getId() == R.id.orderButton) {
             action = new PresidentOrderAction(this);
-        }
-        else {
+        } else {
             // something else was pressed: ignore
             return;
         }
 
         game.sendAction(action); // send action to the game
-//        updatePlayerGui();
+        //updatePlayerGui();
         receiveInfo(state);
     }// onClick
 
     /**
      * callback method when we get a message (e.g., from the game)
      *
-     * @param info
-     * 		the message
+     * @param info the message
      */
     @Override
     public void receiveInfo(GameInfo info) {
@@ -159,9 +163,13 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
                 }
             }
             state = (PresidentState) info;
+            if(state.getCurrentSet().size() != 0 ){
+                int id = getImageId(state.getCurrentSet().get(0));
+                currentSet.setTag(Integer.valueOf(id));
+                currentSet.setBackgroundResource(id);
+            }
             updateDisplay();
-        }
-        else if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo) {
+        } else if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo) {
             // if we had an out-of-turn or illegal move, flash the screen
             Toast.makeText(this.myActivity, "Not your turn", Toast.LENGTH_SHORT).show();
         } // TODO: shows but doesn't prevent player from making changes
@@ -171,8 +179,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
      * callback method--our game has been chosen/rechosen to be the GUI,
      * called from the GUI thread
      *
-     * @param activity
-     * 		the activity under which we are running
+     * @param activity the activity under which we are running
      */
     public void setAsGui(GameMainActivity activity) {
 
@@ -196,7 +203,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
         playersCards[11] = activity.findViewById(R.id.card11);
         playersCards[12] = activity.findViewById(R.id.card12);
         currentSet = activity.findViewById(R.id.currentPlay);
-        for(int i = 0; i < 13; i++){
+        for (int i = 0; i < 13; i++) {
             playersCards[i].setOnClickListener(new CardClickListener());
         }
         // player's name
@@ -228,7 +235,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
         turn = state.getTurn();
         updateDisplay(); //TODO: highlights starting player √
 
-        if(state == null){
+        if (state == null) {
             Log.i("PresidentHumanPlayer", "state is null");
             // this should never happen
         }
@@ -255,34 +262,34 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
         }
     }
 
-        /**
-         * updateCardGui
-         *
-         * update the GUI of a card given which card to update
-         *
-         * @return void
-         */
-        public void updateCardGui(int i) {
-            Card theCard = state.getPlayers().get(0).getHand().get(i);
-            int imageId = getImageId(theCard);
-            playersCards[i].setTag(Integer.valueOf(imageId));
-            playersCards[i].setBackgroundResource(imageId);
-        } // TODO: need to change to not just 0
+    /**
+     * updateCardGui
+     * <p>
+     * update the GUI of a card given which card to update
+     *
+     * @return void
+     */
+    public void updateCardGui(int i) {
+        Card theCard = state.getPlayers().get(0).getHand().get(i);
+        int imageId = getImageId(theCard);
+        playersCards[i].setTag(Integer.valueOf(imageId));
+        playersCards[i].setBackgroundResource(imageId);
+    } // TODO: need to change to not just 0
 
 
     /**
      * updatePlayerGui
-     *
+     * <p>
      * Update's the user's GUI
      *
      * @return void
      */
-    public void updatePlayerGui () { // updates the player's hand
+    public void updatePlayerGui() { // updates the player's hand
         int i = 0;
         for (int j = 0; j < 13; j++) {
             playersCards[j].setBackgroundResource(R.drawable.scoreboard);
         }
-        for (Card c : state.getPlayers().get(0).getHand()){
+        for (Card c : state.getPlayers().get(0).getHand()) {
             updateCardGui(i);
             playersCards[i].getBackground().setAlpha(255);
             playersCards[i].invalidate();
@@ -292,15 +299,15 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
 
     /**
      * getImageId
-     *
+     * <p>
      * Cases to find which image ID to use for a player's set of cards
      *
      * @return the ID of the card image
      */
     public int getImageId(Card theCard) { // grabs Image Button ID
         int imageId = 0;
-        if(theCard.getSuit() == Card.Suit.SPADES) {
-            switch(theCard.getRank().getValue()) {
+        if (theCard.getSuit().equals("Spades")) {
+            switch (theCard.getValue()) {
                 case 1:
                     imageId = R.drawable.three_spades;
                     break;
@@ -341,9 +348,8 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
                     imageId = R.drawable.two_spades;
                     break;
             }
-        }
-        else if(theCard.getSuit() == Card.Suit.HEARTS){
-            switch(theCard.getRank().getValue()) {
+        } else if (theCard.getSuit().equals("Hearts")) {
+            switch (theCard.getValue()) {
                 case 1:
                     imageId = R.drawable.three_hearts;
                     break;
@@ -384,9 +390,8 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
                     imageId = R.drawable.two_hearts;
                     break;
             }
-        }
-        else if(theCard.getSuit() == Card.Suit.DIAMONDS){
-            switch(theCard.getRank().getValue()) {
+        } else if (theCard.getSuit().equals("Diamonds")) {
+            switch (theCard.getValue()) {
                 case 1:
                     imageId = R.drawable.three_diamonds;
                     break;
@@ -427,9 +432,8 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
                     imageId = R.drawable.two_diamonds;
                     break;
             }
-        }
-        else if(theCard.getSuit() == Card.Suit.CLUBS){
-            switch(theCard.getRank().getValue()) {
+        } else if (theCard.getSuit().equals("Clubs")) {
+            switch (theCard.getValue()) {
                 case 1:
                     imageId = R.drawable.three_clubs;
                     break;
@@ -476,13 +480,13 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
 
     /**
      * checkSetFinish
-     *
+     * <p>
      * Checks if a player is out of cards
      *
      * @return true if a player is out of cards
      */
-    public boolean checkSetFinish(int idx){
-        if(state.setFinish()){ // checks if player is out of cards
+    public boolean checkSetFinish(int idx) {
+        if (state.setFinish()) { // checks if player is out of cards
             return true;
         }
         return false;
@@ -490,13 +494,13 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
 
     /**
      * switchHighlight
-     *
+     * <p>
      * highlights a player on the GUI if it is their turn
      *
      * @return void
      */
-    public void switchHighlight(int idx){
-        switch(idx) {
+    public void switchHighlight(int idx) {
+        switch (idx) {
             case 0:
                 player4Text.setBackgroundResource(R.color.yellow);
                 player4Text.setTextColor(myActivity.getResources().getColor(R.color.black));
@@ -544,4 +548,280 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
         player3Text.invalidate();
     }
 
+    public Card getGUICard() {
+        /**
+         * Obtains the the tag value of a given card
+         * sets the card value and suit depending on which drawable was used
+         */
+        Card toAdd = new Card(-1, "Default");
+        int tagValue = (Integer) selectedCard.getTag();
+        switch (tagValue) {
+            case 0: //need to fix this case
+                Toast.makeText(myActivity.getApplication().getApplicationContext(), "No card selected!",
+                        Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.drawable.two_clubs:
+                toAdd.setCardVal(13);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.three_clubs:
+                toAdd.setCardVal(1);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.four_clubs:
+                toAdd.setCardVal(2);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.five_clubs:
+                toAdd.setCardVal(3);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.six_clubs:
+                toAdd.setCardVal(4);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.seven_clubs:
+                toAdd.setCardVal(5);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.eight_clubs:
+                toAdd.setCardVal(6);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.nine_clubs:
+                toAdd.setCardVal(7);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.ten_clubs:
+                toAdd.setCardVal(8);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.jack_clubs:
+                toAdd.setCardVal(9);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.queen_clubs:
+                toAdd.setCardVal(10);
+                toAdd.setCardSuit("Clubs");
+
+                break;
+
+            case R.drawable.king_clubs:
+                toAdd.setCardVal(11);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.ace_clubs:
+                toAdd.setCardVal(12);
+                toAdd.setCardSuit("Clubs");
+                break;
+
+            case R.drawable.two_spades:
+                toAdd.setCardVal(13);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.three_spades:
+                toAdd.setCardVal(1);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.four_spades:
+                toAdd.setCardVal(2);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.five_spades:
+                toAdd.setCardVal(3);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.six_spades:
+                toAdd.setCardVal(4);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.seven_spades:
+                toAdd.setCardVal(5);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.eight_spades:
+                toAdd.setCardVal(6);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.nine_spades:
+                toAdd.setCardVal(7);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.ten_spades:
+                toAdd.setCardVal(8);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.jack_spades:
+                toAdd.setCardVal(9);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.queen_spades:
+                toAdd.setCardVal(10);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.king_spades:
+                toAdd.setCardVal(11);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.ace_spades:
+                toAdd.setCardVal(12);
+                toAdd.setCardSuit("Spades");
+                break;
+
+            case R.drawable.two_diamonds:
+                toAdd.setCardVal(13);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.three_diamonds:
+                toAdd.setCardVal(1);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.four_diamonds:
+                toAdd.setCardVal(2);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.five_diamonds:
+                toAdd.setCardVal(3);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.six_diamonds:
+                toAdd.setCardVal(4);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.seven_diamonds:
+                toAdd.setCardVal(5);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.eight_diamonds:
+                toAdd.setCardVal(6);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.nine_diamonds:
+                toAdd.setCardVal(7);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.ten_diamonds:
+                toAdd.setCardVal(8);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.jack_diamonds:
+                toAdd.setCardVal(9);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.queen_diamonds:
+                toAdd.setCardVal(10);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.king_diamonds:
+                toAdd.setCardVal(11);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.ace_diamonds:
+                toAdd.setCardVal(12);
+                toAdd.setCardSuit("Diamonds");
+                break;
+
+            case R.drawable.two_hearts:
+                toAdd.setCardVal(13);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.three_hearts:
+                toAdd.setCardVal(1);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.four_hearts:
+                toAdd.setCardVal(2);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.five_hearts:
+                toAdd.setCardVal(3);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.six_hearts:
+                toAdd.setCardVal(4);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.seven_hearts:
+                toAdd.setCardVal(5);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.eight_hearts:
+                toAdd.setCardVal(6);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.nine_hearts:
+                toAdd.setCardVal(7);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.ten_hearts:
+                toAdd.setCardVal(8);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.jack_hearts:
+                toAdd.setCardVal(9);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.queen_hearts:
+                toAdd.setCardVal(10);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.king_hearts:
+                toAdd.setCardVal(11);
+                toAdd.setCardSuit("Hearts");
+                break;
+
+            case R.drawable.ace_hearts:
+                toAdd.setCardVal(12);
+                toAdd.setCardSuit("Hearts");
+                break;
+        }
+        return toAdd;
+    }
 }// class CounterHumanPlayer

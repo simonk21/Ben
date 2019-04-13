@@ -2,9 +2,12 @@ package edu.up.cs301.president.Players;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import edu.up.cs301.game.GameComputerPlayer;
 import edu.up.cs301.game.infoMsg.GameInfo;
 import edu.up.cs301.game.infoMsg.NotYourTurnInfo;
+import edu.up.cs301.president.CardInfo.Card;
 import edu.up.cs301.president.PresidentPassAction;
 import edu.up.cs301.president.PresidentPlayAction;
 import edu.up.cs301.president.PresidentState;
@@ -35,10 +38,10 @@ public class PresidentDumbAI extends GameComputerPlayer {
                 game.sendAction(new PresidentPassAction(this));
             }
             else{
+
                 game.sendAction(new PresidentPassAction(this));
-            }
+            } //TODO: added if current set is null, then CPU adds first card in hand
         }
     }
-
 
 }

@@ -3,9 +3,12 @@ package edu.up.cs301.president;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import edu.up.cs301.game.GamePlayer;
 import edu.up.cs301.game.LocalGame;
 import edu.up.cs301.game.actionMsg.GameAction;
+import edu.up.cs301.president.CardInfo.Card;
 
 public class PresidentLocalGame extends LocalGame {
 
@@ -71,7 +74,8 @@ public class PresidentLocalGame extends LocalGame {
         }
         if ( action instanceof PresidentPlayAction ) {
             int playerIdx = getPlayerIdx(action.getPlayer());
-            state.play(playerIdx); // TODO added this
+            ArrayList<Card> temp = ((PresidentPlayAction) action).getCards();
+            play(playerIdx, temp);
             return true;
         }
         if ( action instanceof PresidentTradeAction ) {
@@ -86,4 +90,16 @@ public class PresidentLocalGame extends LocalGame {
         // TODO add something
     }
 
+    public void play(int idx, ArrayList<Card> temp) {
+        if(state.getCurrentSet().size() != 0) {
+            if (temp.get(0).getValue() > state.getCurrentSet().get(0).getValue()){
+                state.getCurrentSet().clear();
+                state.setCurrentSet(temp);
+                state.nextPlayer();
+                return;
+            }
+        }
+        state.setCurrentSet(temp);
+        state.nextPlayer();
+    }
 }

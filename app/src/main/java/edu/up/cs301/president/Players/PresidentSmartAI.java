@@ -36,7 +36,7 @@ public class PresidentSmartAI extends GameComputerPlayer {
                 game.sendAction(new PresidentPassAction(this));
             }
             else{
-                game.sendAction(new PresidentPlayAction(this));
+                game.sendAction(new PresidentPassAction(this));
             } //TODO: identical to dumb ai (need to modify)
         }
     }

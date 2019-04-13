@@ -10,13 +10,25 @@ public class Deck {
     private ArrayList<Card> deck;
     public Deck(){
         deck = new ArrayList<>();
-        for(Card.Suit s : Card.Suit.values()){
-            for(Card.Rank r : Card.Rank.values()){
-                Card card = new Card(s,r);
+        String suit = "Default";
+        for(int i = 0; i < 4; i++){
+            if(i == 0){
+                suit = "Hearts";
+            }
+            else if(i == 1){
+                suit = "Clubs";
+            }
+            else if(i == 2){
+                suit = "Spades";
+            }
+            else if(i == 3){
+                suit = "Diamonds";
+            }
+            for(int j = 1; j < 14; j++){
+                Card card = new Card(j, suit);
                 deck.add(card);
             }
         }
-
         Collections.shuffle(deck);
     }
 
