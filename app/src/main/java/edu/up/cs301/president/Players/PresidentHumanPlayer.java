@@ -120,6 +120,10 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
         GameAction action = null;
         if (button.getId() == R.id.playButton) {
             // play button: player will put down cards
+            if(selectedCard == null){
+                Toast.makeText(this.myActivity, "No Card Selected", Toast.LENGTH_SHORT).show();
+                return;
+            }
             ArrayList<Card> temp = new ArrayList<Card>();
             temp.add(getGUICard());
             selectedCard.getBackground().clearColorFilter();
@@ -230,7 +234,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
         state = new PresidentState();
 
         turn = state.getTurn();
-        updateDisplay(); //TODO: highlights starting player √
+        updateDisplay();
 
         if (state == null) {
             Log.i("PresidentHumanPlayer", "state is null");

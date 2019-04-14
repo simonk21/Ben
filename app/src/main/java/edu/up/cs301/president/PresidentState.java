@@ -181,37 +181,6 @@ public class PresidentState extends GameState {
      * @return boolean if someone won the game
      */
     public boolean setFinish() {
-        for(int idx = 0; idx < rankCount.length; idx++){
-            if (players.get(idx).getHand().size() > 0) {
-
-            } else {
-                if (rankCount[idx] == 0) {
-                    numRank++;
-                    rankCount[idx] = 1;
-                    switch(numRank) {
-                        case 1:
-                            players.get(idx).setRank(3);
-                            gameWon(players.get(idx));
-                            return true;
-                        case 2:
-                            players.get(idx).setRank(2);
-                            gameWon(players.get(idx));
-                            return true;
-                        case 3:
-                            players.get(idx).setRank(1);
-                            return true;
-                        case 4:
-                            players.get(idx).setRank(0);
-                            return true;
-                    }
-
-                }
-                else if(rankCount[idx] == 1){
-
-                }
-            }
-        }
-
         /**
          * If all players have played their cards,
          * then the round is over and
@@ -246,7 +215,39 @@ public class PresidentState extends GameState {
     public void setRoundStart(boolean roundStart) {
         this.roundStart = roundStart;
         if(roundStart){
-            trade();
+
+        }
+    }
+
+    public void checkPresident(int turn) {
+        for (int idx = 0; idx < rankCount.length; idx++) {
+            if (players.get(idx).getHand().size() > 0) {
+
+            } else {
+                if (rankCount[idx] == 0) {
+                    numRank++;
+                    rankCount[idx] = 1;
+                    switch (numRank) {
+                        case 1:
+                            players.get(idx).setRank(3);
+                            gameWon(players.get(idx));
+                            return;
+                        case 2:
+                            players.get(idx).setRank(2);
+                            gameWon(players.get(idx));
+                            return;
+                        case 3:
+                            players.get(idx).setRank(1);
+                            return;
+                        case 4:
+                            players.get(idx).setRank(0);
+                            return;
+                    }
+
+                } else if (rankCount[idx] == 1) {
+
+                }
+            }
         }
     }
 
@@ -257,29 +258,6 @@ public class PresidentState extends GameState {
      */
     public boolean trade() {
         return false;
-    }
-
-    /**
-     * pass
-     *
-     * @return true (player can pass turn) or false (player cannot pass turn)
-     */
-    public boolean pass(int turn){
-        if(this.turn != turn){
-            return false;
-        }
-        players.get(turn).setPass();
-        if(checkPass()) {
-            getCurrentSet().clear();
-            for(int i =  0; i < players.size();i++){
-                players.get(i).resetPass();
-            }
-        }
-        nextPlayer();
-//        while(players.get(turn).getHand().size() < 1){
-//            nextPlayer();
-//        }
-        return true;
     }
 
     public int getPrev() { return prev; }
