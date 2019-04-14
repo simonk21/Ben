@@ -102,9 +102,9 @@ public class PresidentLocalGame extends LocalGame {
                     if(state.getPlayers().get(idx).getHand().get(i) ==
                             temp.get(0)){
                         state.getPlayers().get(idx).getHand().remove(i);
-                        state.getPlayers().get(idx).resetPass();
                     }
                 }
+                state.getPlayers().get(idx).resetPass();
                 state.nextPlayer();
                 return true;
             }
@@ -117,9 +117,9 @@ public class PresidentLocalGame extends LocalGame {
                     state.getPlayers().get(idx).getHand().get(i).getSuit() ==
                     temp.get(0).getSuit()){
                 state.getPlayers().get(idx).getHand().remove(i);
-                state.getPlayers().get(idx).resetPass();
             }
         }
+        state.getPlayers().get(idx).resetPass();
         state.nextPlayer();
         return true;
     }

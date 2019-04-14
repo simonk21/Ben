@@ -23,6 +23,7 @@ public class PresidentState extends GameState {
     private int rankCount[];
     private int numRank;
     private int PassAll[];
+    private int prev;
 
     private boolean roundStart;
 
@@ -57,6 +58,7 @@ public class PresidentState extends GameState {
             PassAll[i] = 0;
         }
         numRank = 0;
+        prev = -1;
         roundStart = false;
         startRound();
     }
@@ -280,6 +282,8 @@ public class PresidentState extends GameState {
         return true;
     }
 
+    public int getPrev() { return prev; }
+    public void setPrev() { prev = turn; }
     /**
      * checkPass
      *
@@ -293,11 +297,9 @@ public class PresidentState extends GameState {
             }
         }
         if(count == 3){
-            return true; // next player gets to restart
+            return true;
         }
-        else{
-            return false; // next player cannot restart
-        }
+        return false;
     }
 
     /**
