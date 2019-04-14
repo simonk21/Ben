@@ -69,7 +69,8 @@ public class PresidentLocalGame extends LocalGame {
         }
         if( action instanceof PresidentPassAction ) {
             int playerIdx = getPlayerIdx(action.getPlayer());
-            state.pass(playerIdx);
+            pass(playerIdx);
+            state.getPlayers().get(playerIdx).setPass();
             return true;
         }
         if ( action instanceof PresidentPlayAction ) {

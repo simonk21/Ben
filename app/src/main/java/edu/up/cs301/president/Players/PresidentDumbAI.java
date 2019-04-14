@@ -38,6 +38,7 @@ public class PresidentDumbAI extends GameComputerPlayer {
             sleep(1000);
             if(Math.random() < 0.5){
                 game.sendAction(new PresidentPassAction(this));
+                savedState.getPlayers().get(this.playerNum).setPass();
             }
             else{
                 savedState = (PresidentState) info;
@@ -47,6 +48,7 @@ public class PresidentDumbAI extends GameComputerPlayer {
                 temp.add(t);
                 if(savedState.getCurrentSet().get(0).getValue() > temp.get(0).getValue()){
                     game.sendAction(new PresidentPassAction(this));
+                    savedState.getPlayers().get(this.playerNum).setPass();
                 }
                 else {
                     game.sendAction(new PresidentPlayAction(this, temp));
