@@ -147,6 +147,7 @@ public class PresidentLocalGame extends LocalGame {
         int count = 0;
         while(state.getPlayers().get(state.getTurn()).getHand().size() < 1){
             count++;
+            state.checkPresident(state.getTurn());
             if(count == 4){
                 state.setRoundStart(true);
                 return;

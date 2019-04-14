@@ -215,38 +215,29 @@ public class PresidentState extends GameState {
     public void setRoundStart(boolean roundStart) {
         this.roundStart = roundStart;
         if(roundStart){
-
+            trade();
         }
     }
 
     public void checkPresident(int turn) {
-        for (int idx = 0; idx < rankCount.length; idx++) {
-            if (players.get(idx).getHand().size() > 0) {
-
-            } else {
-                if (rankCount[idx] == 0) {
-                    numRank++;
-                    rankCount[idx] = 1;
-                    switch (numRank) {
-                        case 1:
-                            players.get(idx).setRank(3);
-                            gameWon(players.get(idx));
-                            return;
-                        case 2:
-                            players.get(idx).setRank(2);
-                            gameWon(players.get(idx));
-                            return;
-                        case 3:
-                            players.get(idx).setRank(1);
-                            return;
-                        case 4:
-                            players.get(idx).setRank(0);
-                            return;
-                    }
-
-                } else if (rankCount[idx] == 1) {
-
+        if(rankCount[turn] == -1){
+            int count = 0;
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).getRank() > players.get(turn).getRank()){
+                    count++;
                 }
+            }
+            if(count == 0){
+                players.get(turn).setRank(3); // set to president
+            }
+            else if(count == 1){
+                players.get(turn).setRank(2); // set to vp
+            }
+            else if(count == 2){
+                players.get(turn).setRank(1); // set to vs
+            }
+            else if(count == 3){
+                players.get(turn).setRank(0); // set to scum
             }
         }
     }
