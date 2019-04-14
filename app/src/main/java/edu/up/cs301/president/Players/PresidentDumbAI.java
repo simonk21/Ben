@@ -13,6 +13,8 @@ import edu.up.cs301.president.PresidentPlayAction;
 import edu.up.cs301.president.PresidentState;
 
 public class PresidentDumbAI extends GameComputerPlayer {
+
+    private PresidentState savedState;
     /**
      * constructor
      *
@@ -34,28 +36,28 @@ public class PresidentDumbAI extends GameComputerPlayer {
         }
         if(info instanceof PresidentState){
             sleep(1000);
-            if(Math.random() < 0.5){
+            if(Math.random() < 0.25){
                 game.sendAction(new PresidentPassAction(this));
             }
             else{
-                PresidentState state = (PresidentState) info;
-//                ArrayList<Card> temp = state.getPlayers().get(state.getTurn()).getHand();
-//                Card t = getMax(temp);
-//                temp.clear();
-//                temp.add(t);
-                game.sendAction(new PresidentPassAction(this));
-            } //TODO: added if current set is null, then CPU adds first card in hand
+                savedState = (PresidentState) info;
+                ArrayList<Card> temp = savedState.getPlayers().get(this.playerNum).getHand();
+                Card t = getMax(temp);
+                temp.clear();
+                temp.add(t);
+                game.sendAction(new PresidentPlayAction(this, temp));
+            } //TODO: adding a card doesn't work or accessing the state?
         }
     }
 
-//    public Card getMax(ArrayList<Card> temp){
-//        Card c = new Card(-1, "Default");
-//        for(int i = 0; i < temp.size(); i++){
-//            if(c.getValue() < temp.get(i).getValue()){
-//                c.setCardSuit(temp.get(i).getSuit());
-//                c.setCardVal(temp.get(i).getValue());
-//            }
-//        }
-//        return c;
-//    }
+    public Card getMax(ArrayList<Card> temp){
+        Card c = new Card(-1, "Default");
+        for(int i = 0; i < temp.size(); i++){
+            if(c.getValue() < temp.get(i).getValue()){
+                c.setCardSuit(temp.get(i).getSuit());
+                c.setCardVal(temp.get(i).getValue());
+            }
+        }
+        return c;
+    }
 }

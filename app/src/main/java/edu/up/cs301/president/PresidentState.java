@@ -65,7 +65,14 @@ public class PresidentState extends GameState {
         deck = orig.deck;
         currentSet = new ArrayList<>(orig.currentSet);
         turn = orig.turn;
-
+        players = new ArrayList<>();
+        for(int i = 0; i < orig.players.size(); i++){
+            if(i == idx){
+                players.add(new PlayerTracker(orig.players.get(i)));
+            } else{
+                players.add(new PlayerTracker());
+            }
+        }
     }
 
     public PresidentState(PresidentState orig){

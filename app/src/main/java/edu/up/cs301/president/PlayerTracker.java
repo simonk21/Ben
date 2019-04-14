@@ -32,6 +32,10 @@ public class PlayerTracker {
         score = orig.score;
         pass = orig.pass;
         rank = orig.rank;
+        playerHand = new ArrayList<>();
+        for(int i = 0; i < orig.getHand().size(); i++){
+            playerHand.add(new Card(orig.getHand().get(i)));
+        }
     }
 
     /* player's score */
@@ -45,6 +49,7 @@ public class PlayerTracker {
     public ArrayList<Card> getHand() { return playerHand; }
     public void addCard(Card in) { playerHand.add(in); }
 
+    public void setHand(ArrayList<Card> hand) { playerHand = hand; }
 
     /* player's pass */
     public int getPass() { return pass; }

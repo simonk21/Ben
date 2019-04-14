@@ -23,6 +23,11 @@ public class Card implements Serializable {
         this.cardSuit = cardSuit;
     }
 
+    public Card(Card orig){
+        cardSuit = orig.cardSuit;
+        cardVal = orig.cardVal;
+    }
+
     /** Setter / Getter for Card value specifically for
      *  the trade function
      */
