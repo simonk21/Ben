@@ -124,7 +124,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
             temp.add(getGUICard());
             game.sendAction(new PresidentPlayAction(this, temp));
         } else if (button.getId() == R.id.passButton) {
-
+            selectedCard = null;
             action = new PresidentPassAction(this);
 
         } else if (button.getId() == R.id.orderButton) {
