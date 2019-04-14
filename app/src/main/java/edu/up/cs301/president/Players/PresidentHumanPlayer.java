@@ -161,6 +161,9 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
                 currentSet.setTag(Integer.valueOf(id));
                 currentSet.setBackgroundResource(id);
             }
+            else{
+                currentSet.setBackgroundResource(R.drawable.card_back);
+            }
             updateDisplay();
         } else if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo) {
             // if we had an out-of-turn or illegal move, flash the screen

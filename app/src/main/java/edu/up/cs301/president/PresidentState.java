@@ -266,13 +266,13 @@ public class PresidentState extends GameState {
         if(this.turn != turn){
             return false;
         }
-        PassAll[turn] = 1;
-//        if(checkPass()) {
-//            getCurrentSet().clear();
-//            for(int i =  0; i < PassAll.length;i++){
-//                players.get(i).resetPass();
-//            }
-//        }
+        players.get(turn).setPass();
+        if(checkPass()) {
+            getCurrentSet().clear();
+            for(int i =  0; i < players.size();i++){
+                players.get(i).resetPass();
+            }
+        }
         nextPlayer();
 //        while(players.get(turn).getHand().size() < 1){
 //            nextPlayer();
@@ -287,8 +287,8 @@ public class PresidentState extends GameState {
      */
     public boolean checkPass(){
         int count = 0;
-        for(int i = 0; i < PassAll.length; i++){
-            if(PassAll[i] == 1){
+        for(int i = 0; i < players.size(); i++){
+            if(players.get(i).getPass() == 1){
                 count++;
             }
         }

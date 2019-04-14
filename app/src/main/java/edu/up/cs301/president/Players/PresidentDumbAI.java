@@ -26,7 +26,7 @@ public class PresidentDumbAI extends GameComputerPlayer {
 
     @Override
     protected void receiveInfo(GameInfo info) {
-        sleep(1000);
+        sleep(2000);
 
         if(info == null) {
             Log.i("PresidentDumbAI", "info is null");
@@ -35,25 +35,36 @@ public class PresidentDumbAI extends GameComputerPlayer {
             return;
         }
         if(info instanceof PresidentState){
-            sleep(1000);
+            boolean mustMove = false;
+            savedState = (PresidentState) info;
+            ArrayList<Card> temp = savedState.getPlayers().get(this.playerNum).getHand();
+            Card t = getMax(temp);
+            temp.clear();
+            temp.add(t);
+
             if(Math.random() < 0.5){
-                game.sendAction(new PresidentPassAction(this));
-                savedState.getPlayers().get(this.playerNum).setPass();
+                if(savedState.getCurrentSet().size() != 0){
+                    game.sendAction(new PresidentPassAction(this));
+                }
+                else{
+                    mustMove = true;
+                }
             }
             else{
-                savedState = (PresidentState) info;
-                ArrayList<Card> temp = savedState.getPlayers().get(this.playerNum).getHand();
-                Card t = getMax(temp);
-                temp.clear();
-                temp.add(t);
-                if(savedState.getCurrentSet().get(0).getValue() > temp.get(0).getValue()){
-                    game.sendAction(new PresidentPassAction(this));
-                    savedState.getPlayers().get(this.playerNum).setPass();
+                if(savedState.getCurrentSet().size() != 0) {
+                    if (savedState.getCurrentSet().get(0).getValue() >= temp.get(0).getValue()) {
+                        game.sendAction(new PresidentPassAction(this));
+                    }
+                    else {
+                        game.sendAction(new PresidentPlayAction(this, temp));
+                    }
                 }
-                else {
-                    game.sendAction(new PresidentPlayAction(this, temp));
-                }
+                game.sendAction(new PresidentPlayAction(this,temp));
+
             } //TODO: adding a card doesn't work or accessing the state?
+            if(mustMove){
+                game.sendAction(new PresidentPlayAction(this, temp));
+            }
         }
     }
 
