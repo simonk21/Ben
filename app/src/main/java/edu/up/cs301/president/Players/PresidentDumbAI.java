@@ -26,8 +26,7 @@ public class PresidentDumbAI extends GameComputerPlayer {
 
     @Override
     protected void receiveInfo(GameInfo info) {
-        sleep(2000);
-
+        sleep(50);
         if(info == null) {
             Log.i("PresidentDumbAI", "info is null");
         }
@@ -43,6 +42,7 @@ public class PresidentDumbAI extends GameComputerPlayer {
             temp.add(t);
 
             if(Math.random() < 0.5){
+                sleep(1000);
                 if(savedState.getCurrentSet().size() != 0){
                     game.sendAction(new PresidentPassAction(this));
                 }

@@ -122,6 +122,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
             // play button: player will put down cards
             ArrayList<Card> temp = new ArrayList<Card>();
             temp.add(getGUICard());
+            selectedCard.getBackground().clearColorFilter();
             game.sendAction(new PresidentPlayAction(this, temp));
         } else if (button.getId() == R.id.passButton) {
             selectedCard = null;
