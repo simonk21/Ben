@@ -38,10 +38,24 @@ public class PresidentDumbAI extends GameComputerPlayer {
                 game.sendAction(new PresidentPassAction(this));
             }
             else{
-
+                PresidentState state = (PresidentState) info;
+//                ArrayList<Card> temp = state.getPlayers().get(state.getTurn()).getHand();
+//                Card t = getMax(temp);
+//                temp.clear();
+//                temp.add(t);
                 game.sendAction(new PresidentPassAction(this));
             } //TODO: added if current set is null, then CPU adds first card in hand
         }
     }
 
+//    public Card getMax(ArrayList<Card> temp){
+//        Card c = new Card(-1, "Default");
+//        for(int i = 0; i < temp.size(); i++){
+//            if(c.getValue() < temp.get(i).getValue()){
+//                c.setCardSuit(temp.get(i).getSuit());
+//                c.setCardVal(temp.get(i).getValue());
+//            }
+//        }
+//        return c;
+//    }
 }

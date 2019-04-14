@@ -95,11 +95,25 @@ public class PresidentLocalGame extends LocalGame {
             if (temp.get(0).getValue() > state.getCurrentSet().get(0).getValue()){
                 state.getCurrentSet().clear();
                 state.setCurrentSet(temp);
+                for(int i = 0; i < state.getPlayers().get(idx).getHand().size();i++) {
+                    if(state.getPlayers().get(idx).getHand().get(i) ==
+                            temp.get(0)){
+                        state.getPlayers().get(idx).getHand().remove(i);
+                    }
+                }
                 state.nextPlayer();
                 return;
             }
         }
         state.setCurrentSet(temp);
+        for(int i = 0; i < state.getPlayers().get(idx).getHand().size();i++) {
+            if(state.getPlayers().get(idx).getHand().get(i).getValue() ==
+                    temp.get(0).getValue() &&
+                    state.getPlayers().get(idx).getHand().get(i).getSuit() ==
+                    temp.get(0).getSuit()){
+                state.getPlayers().get(idx).getHand().remove(i);
+            }
+        }
         state.nextPlayer();
     }
 }

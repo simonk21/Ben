@@ -72,14 +72,14 @@ public class PresidentState extends GameState {
         currentSet = orig.currentSet;
         turn = orig.turn;
         players = getPlayers();
-    }
+    } //TODO: copies gamestate to each player but then erases the currentSet ?
     /**
      * startRound
      * if players got rid of hand
      * need to check if game is over, someone reached 11 pts.
      */
     public void startRound() {
-        currentSet.clear();
+        //currentSet.clear();
         if (checkGame() != -1) {
             // TODO: someone won
         } else {
@@ -258,7 +258,7 @@ public class PresidentState extends GameState {
         }
         PassAll[turn] = 1;
         if(checkPass()) {
-            getCurrentSet().removeAll(getCurrentSet());
+            //getCurrentSet().removeAll(getCurrentSet());
             for(int i =  0; i < PassAll.length;i++){
                 PassAll[i] = 0;
             }
@@ -300,6 +300,8 @@ public class PresidentState extends GameState {
         }
     }
 
-    public void setCurrentSet( ArrayList<Card> in) { currentSet = in; }
+    public void setCurrentSet( ArrayList<Card> in) {
+        this.currentSet = in;
+    }
 
 }

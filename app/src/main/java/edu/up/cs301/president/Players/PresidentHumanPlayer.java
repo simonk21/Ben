@@ -87,7 +87,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
     /**
      * sets the counter value in the text view
      */
-    protected void updateDisplay() { // TODO: how to access human player's idx
+    protected void updateDisplay() {
         switch (this.state.getTurn()) {
             case 0:
                 switchHighlight(0);
@@ -101,7 +101,10 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
             case 3:
                 switchHighlight(3);
                 break;
-        }//TODO I want it to update highlight on player's name
+        }
+        if(selectedCard != null){
+            selectedCard.setBackgroundResource(R.drawable.scoreboard);
+        }
     }
 
     /**
@@ -113,37 +116,27 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
     public void onClick(View button) {
         // if we are not yet connected to a game, ignore
         if (game == null) return;
-        // TODO issue is that the state is never updated by the localgame stuff
-        ArrayList<Card> play = new ArrayList<>();
-        Card toAdd = new Card(0, null);
-        for (int i = 0; i < play.size(); i++) {
-            play.remove(0);
-        }
-        // if i change stuff on here then it works
-        // Construct the action and send it to the game
+
         GameAction action = null;
         if (button.getId() == R.id.playButton) {
             // play button: player will put down cards
             ArrayList<Card> temp = new ArrayList<Card>();
             temp.add(getGUICard());
-            game.sendAction(new PresidentPlayAction(this, temp)); // TODO change
-            // state.play(0); // TODO change depending on player's idx
-//            int id = getImageId(state.getCurrentSet().get(0));
-//            currentSet.setTag(Integer.valueOf(id)); // TODO places the card on currentset
-//            currentSet.setBackgroundResource(id); // TODO need to update
+            game.sendAction(new PresidentPlayAction(this, temp));
         } else if (button.getId() == R.id.passButton) {
-            // pass button: player will not put down cards
+
             action = new PresidentPassAction(this);
-            // state.pass(0); // TODO need to change like in play
+
         } else if (button.getId() == R.id.orderButton) {
+
             action = new PresidentOrderAction(this);
+
         } else {
             // something else was pressed: ignore
             return;
         }
 
         game.sendAction(action); // send action to the game
-        //updatePlayerGui();
         receiveInfo(state);
     }// onClick
 

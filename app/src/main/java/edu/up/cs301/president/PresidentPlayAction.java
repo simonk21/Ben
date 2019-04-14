@@ -21,5 +21,9 @@ public class PresidentPlayAction extends GameAction {
 
     }
 
+    public PresidentPlayAction(GamePlayer player){
+        super(player);
+    }
+
     public ArrayList<Card> getCards() { return cards; }
 }
