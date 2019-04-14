@@ -36,7 +36,7 @@ public class PresidentDumbAI extends GameComputerPlayer {
         }
         if(info instanceof PresidentState){
             sleep(1000);
-            if(Math.random() < 0.25){
+            if(Math.random() < 0.5){
                 game.sendAction(new PresidentPassAction(this));
             }
             else{
@@ -45,7 +45,12 @@ public class PresidentDumbAI extends GameComputerPlayer {
                 Card t = getMax(temp);
                 temp.clear();
                 temp.add(t);
-                game.sendAction(new PresidentPlayAction(this, temp));
+                if(savedState.getCurrentSet().get(0).getValue() > temp.get(0).getValue()){
+                    game.sendAction(new PresidentPassAction(this));
+                }
+                else {
+                    game.sendAction(new PresidentPlayAction(this, temp));
+                }
             } //TODO: adding a card doesn't work or accessing the state?
         }
     }

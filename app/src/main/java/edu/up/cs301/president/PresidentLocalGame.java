@@ -75,8 +75,10 @@ public class PresidentLocalGame extends LocalGame {
         if ( action instanceof PresidentPlayAction ) {
             int playerIdx = getPlayerIdx(action.getPlayer());
             ArrayList<Card> temp = ((PresidentPlayAction) action).getCards();
-            play(playerIdx, temp);
-            return true;
+            if(play(playerIdx, temp)) {
+                return true;
+            }
+            return false;
         }
         if ( action instanceof PresidentTradeAction ) {
             // TODO need to add something
@@ -90,7 +92,7 @@ public class PresidentLocalGame extends LocalGame {
         // TODO add something
     }
 
-    public void play(int idx, ArrayList<Card> temp) {
+    public boolean play(int idx, ArrayList<Card> temp) {
         if(state.getCurrentSet().size() != 0) {
             if (temp.get(0).getValue() > state.getCurrentSet().get(0).getValue()){
                 state.getCurrentSet().clear();
@@ -102,8 +104,9 @@ public class PresidentLocalGame extends LocalGame {
                     }
                 }
                 state.nextPlayer();
-                return;
+                return true;
             }
+            return false;
         }
         state.setCurrentSet(temp);
         for(int i = 0; i < state.getPlayers().get(idx).getHand().size();i++) {
@@ -115,5 +118,6 @@ public class PresidentLocalGame extends LocalGame {
             }
         }
         state.nextPlayer();
+        return true;
     }
 }
