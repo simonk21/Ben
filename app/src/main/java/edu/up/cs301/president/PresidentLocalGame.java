@@ -146,14 +146,25 @@ public class PresidentLocalGame extends LocalGame {
             return false;
         }
         state.getPlayers().get(turn).setPass();
+
         if(state.checkPass()) {
             state.getCurrentSet().clear();
+            for(int i = 0; i < state.getPlayers().size(); i++) {
+                if (state.getPlayers().get(i).getPass() == 0) {
+                } else {
+                    state.setTurn(i);
+                }
+            }
+
             for(int i =  0; i < state.getPlayers().size();i++){
                state.getPlayers().get(i).resetPass();
             }
+        } else {
+            state.nextPlayer();
         }
-        state.nextPlayer();
-        checkNoCards();
+
+        checkNoCards(); // Doesnt Do Anything. Just returns a boolean
+                        // but the value isn't used
         return true;
     }
 

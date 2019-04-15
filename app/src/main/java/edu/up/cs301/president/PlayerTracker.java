@@ -65,8 +65,8 @@ public class PlayerTracker {
 
     /* player's pass */
     public int getPass() { return pass; }
-    public void setPass() { pass = 1; }
-    public void resetPass() { pass = 0; }
+    public void setPass() { this.pass = 1; }
+    public void resetPass() { this.pass = 0; }
 
     /**
      * removeCard
