@@ -25,6 +25,7 @@ public class PresidentState extends GameState {
     private int PassAll[];
     private int prev;
 
+    private int numRound;
     private boolean roundStart;
 
     private ArrayList<PlayerTracker> players;
@@ -43,8 +44,8 @@ public class PresidentState extends GameState {
         }
 
         deck.deal(players); // deals cards (unsorted)
-
-        turn = 0; //(int) (Math.random() * 4 + 1); // selects random player to start
+        numRound = 1;
+        turn = (int) (Math.random() * 4 + 1); // selects random player to start
 //
 //        players = new ArrayList<>();
 //        for(int i = 0; i < 4; i++){
@@ -60,7 +61,6 @@ public class PresidentState extends GameState {
         numRank = 0;
         prev = -1;
         roundStart = false;
-        startRound();
     }
 
     public PresidentState(PresidentState orig, int idx) {
@@ -78,6 +78,7 @@ public class PresidentState extends GameState {
 //                players.add(new PlayerTracker());
 //            }
         }
+        numRound = orig.numRound;
     }
 
     public PresidentState(PresidentState orig){
@@ -166,6 +167,7 @@ public class PresidentState extends GameState {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i) == player) {
                 if (player.getScore() >= 11) {
+
                     return true;
                 }
             }
@@ -217,8 +219,12 @@ public class PresidentState extends GameState {
         if(roundStart){
             deck = new Deck();
             deck.deal(players);
+            currentSet.clear();
             if(trade()){
                 for(int i = 0; i < players.size(); i++){
+                    if(players.get(i).getRank() == 0){
+                        turn = i;
+                    }
                     players.get(i).setRank(-1);
                 }
             }
@@ -395,6 +401,20 @@ public class PresidentState extends GameState {
 
     public void setCurrentSet( ArrayList<Card> in) {
         this.currentSet = in;
+    }
+
+    public int find7Spades(){ // TODO: find 7 spades, maybe for final
+        for(int i = 0; i < players.size(); i++){
+            for(int j = 0; j < players.get(i).getHand().size(); j++){
+                if(players.get(i).getHand().get(j).getValue() == 9 &&
+                    players.get(i).getHand().get(j).getSuit().equals("Spades")){
+                    currentSet.add(players.get(i).getHand().get(j));
+                    players.get(i).removeCard("Spades", 9);
+                    return i;
+                }
+            }
+        }
+        return 0;
     }
 
 }
