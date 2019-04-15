@@ -170,10 +170,14 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
                 currentSet.setBackgroundResource(R.drawable.card_back);
             }
             updateDisplay();
-        } else if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo) {
+        } else if (info instanceof NotYourTurnInfo) {
             // if we had an out-of-turn or illegal move, flash the screen
             Toast.makeText(this.myActivity, "Not your turn", Toast.LENGTH_SHORT).show();
-        } // TODO: shows but doesn't prevent player from making changes
+        }
+        else if (info instanceof IllegalMoveInfo){
+            Toast.makeText(this.myActivity, "Illegal Move", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     /**
