@@ -128,15 +128,15 @@
 
                 <TextView
                     android:id="@+id/Player3Text"
-                    android:text="Player 3"
                     android:layout_width="200dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:background="#000000"
                     android:gravity="center"
+                    android:text="PLAYER 3"
                     android:textColor="#FFFFFF"
-                    android:layout_weight="1"
-                    android:textSize="14dp"/>
+                    android:textSize="14dp" />
 
             </LinearLayout>
 
