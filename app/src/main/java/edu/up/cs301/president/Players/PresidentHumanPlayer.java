@@ -88,6 +88,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
      * sets the counter value in the text view
      */
     protected void updateDisplay() {
+        //updatePlayerGui();
         switch (this.state.getTurn()) {
             case 0:
                 switchHighlight(0);
