@@ -130,7 +130,7 @@ public class PresidentState extends GameState {
      * getters and setters
      */
     public void setTurn(int idx) {
-        turn = idx;
+        this.turn = idx;
     }
 
     public int getTurn() {

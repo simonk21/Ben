@@ -150,7 +150,7 @@ public class PresidentLocalGame extends LocalGame {
         if(state.checkPass()) {
             state.getCurrentSet().clear();
             for(int i = 0; i < state.getPlayers().size(); i++) {
-                if (state.getPlayers().get(i).getPass() == 0) {
+                if (state.getPlayers().get(i).getPass() == 1) {
                 } else {
                     state.setTurn(i);
                 }
