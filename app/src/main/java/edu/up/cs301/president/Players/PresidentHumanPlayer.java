@@ -103,9 +103,9 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
                 switchHighlight(3);
                 break;
         }
-        if(selectedCard != null){
-            selectedCard.setBackgroundResource(R.drawable.scoreboard);
-        }
+//        if(selectedCard != null){
+//            selectedCard.setBackgroundResource(R.drawable.scoreboard);
+//        }
     }
 
     /**
