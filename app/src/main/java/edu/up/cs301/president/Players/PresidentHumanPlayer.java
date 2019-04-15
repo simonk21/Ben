@@ -127,7 +127,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
             ArrayList<Card> temp = new ArrayList<Card>();
             temp.add(getGUICard());
             selectedCard.getBackground().clearColorFilter();
-            game.sendAction(new PresidentPlayAction(this, temp));
+            action = new PresidentPlayAction(this, temp);
         } else if (button.getId() == R.id.passButton) {
             selectedCard = null;
             action = new PresidentPassAction(this);
@@ -169,6 +169,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
             else{
                 currentSet.setBackgroundResource(R.drawable.card_back);
             }
+            updatePlayerGui();
             updateDisplay();
         } else if (info instanceof NotYourTurnInfo) {
             // if we had an out-of-turn or illegal move, flash the screen
@@ -235,17 +236,10 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
             receiveInfo(state);
         }
 
-        state = new PresidentState();
-
-        turn = state.getTurn();
-        updateDisplay();
-
         if (state == null) {
             Log.i("PresidentHumanPlayer", "state is null");
             // this should never happen
         }
-
-        updatePlayerGui();
 
     }
 
@@ -277,7 +271,7 @@ public class PresidentHumanPlayer extends GameHumanPlayer implements View.OnClic
     public void updateCardGui(int i) {
         Card theCard = state.getPlayers().get(0).getHand().get(i);
         int imageId = getImageId(theCard);
-        playersCards[i].setTag(Integer.valueOf(imageId));
+        playersCards[i].setTag(imageId);
         playersCards[i].setBackgroundResource(imageId);
     } // TODO: need to change to not just 0
 

@@ -95,8 +95,9 @@ public class PresidentLocalGame extends LocalGame {
                 state.getCurrentSet().clear();
                 state.setCurrentSet(temp);
                 for(int i = 0; i < state.getPlayers().get(idx).getHand().size();i++) {
-                    if(state.getPlayers().get(idx).getHand().get(i) ==
-                            temp.get(0)){
+                    if(state.getPlayers().get(idx).getHand().get(i).getValue() ==
+                            temp.get(0).getValue() &&
+                            state.getPlayers().get(idx).getHand().get(i).getSuit().equals(temp.get(0).getSuit())){
                         int val = temp.get(0).getValue();
                         String suit = temp.get(0).getSuit();
                         state.getPlayers().get(idx).removeCard(suit,val);
@@ -114,8 +115,7 @@ public class PresidentLocalGame extends LocalGame {
         for(int i = 0; i < state.getPlayers().get(idx).getHand().size();i++) {
             if(state.getPlayers().get(idx).getHand().get(i).getValue() ==
                     temp.get(0).getValue() &&
-                    state.getPlayers().get(idx).getHand().get(i).getSuit() ==
-                    temp.get(0).getSuit()){
+                    state.getPlayers().get(idx).getHand().get(i).getSuit().equals(temp.get(0).getSuit())){
                 int val = temp.get(0).getValue();
                 String suit = temp.get(0).getSuit();
                 state.getPlayers().get(idx).removeCard(suit,val);
