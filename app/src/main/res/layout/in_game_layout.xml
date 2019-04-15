@@ -152,6 +152,11 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10" />
+
                 <ImageButton
                     android:id="@+id/currentPlay"
                     android:layout_width="110dp"
