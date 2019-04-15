@@ -86,7 +86,7 @@ public class PresidentLocalGame extends LocalGame {
             // TODO need to add something
             return true;
         }
-        return false; // TODO: need to change this
+        return false; // TODO: we actually can remove it
     }
 
     public boolean play(int idx, ArrayList<Card> temp) {
@@ -97,12 +97,15 @@ public class PresidentLocalGame extends LocalGame {
                 for(int i = 0; i < state.getPlayers().get(idx).getHand().size();i++) {
                     if(state.getPlayers().get(idx).getHand().get(i) ==
                             temp.get(0)){
-                        state.getPlayers().get(idx).getHand().remove(i);
+                        int val = temp.get(0).getValue();
+                        String suit = temp.get(0).getSuit();
+                        state.getPlayers().get(idx).removeCard(suit,val);
                     }
                 }
                 state.getPlayers().get(idx).resetPass();
-                state.nextPlayer();
-                checkNoCards();
+                if(!checkNoCards()) {
+                    state.nextPlayer();
+                }
                 return true;
             }
             return false;
@@ -113,7 +116,9 @@ public class PresidentLocalGame extends LocalGame {
                     temp.get(0).getValue() &&
                     state.getPlayers().get(idx).getHand().get(i).getSuit() ==
                     temp.get(0).getSuit()){
-                state.getPlayers().get(idx).getHand().remove(i);
+                int val = temp.get(0).getValue();
+                String suit = temp.get(0).getSuit();
+                state.getPlayers().get(idx).removeCard(suit,val);
             }
         }
         state.getPlayers().get(idx).resetPass();
@@ -143,17 +148,20 @@ public class PresidentLocalGame extends LocalGame {
         return true;
     }
 
-    public void checkNoCards(){
+    public boolean checkNoCards(){
         int count = 0;
-        while(state.getPlayers().get(state.getTurn()).getHand().size() < 1){
-            count++;
-            state.checkPresident(state.getTurn());
-            if(count == 4){
-                state.setRoundStart(true);
-                return;
+        if(state.getPlayers().get(state.getTurn()).getHand().size() < 1) {
+            while (state.getPlayers().get(state.getTurn()).getHand().size() < 1) {
+                count++;
+                state.checkPresident(state.getTurn());
+                if (count == 4) {
+                    state.setRoundStart(true);
+                    return true;
+                }
+                state.nextPlayer();
             }
-            state.nextPlayer();
+            return true;
         }
-
+        return false;
     }
 }

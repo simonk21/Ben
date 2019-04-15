@@ -40,7 +40,19 @@ public class PlayerTracker {
 
     /* player's score */
     public int getScore() { return score; }
-    public void setScore(int score) { this.score = score; }
+    public void setScore(int rank) {
+        switch (rank){
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                this.score++; // if vice pres add one point
+                break;
+            case 3:
+                this.score += 2; // if pres add two pts
+        }
+    }
 
     /* player's rank */
     public int getRank() { return rank; }
@@ -55,4 +67,18 @@ public class PlayerTracker {
     public int getPass() { return pass; }
     public void setPass() { pass = 1; }
     public void resetPass() { pass = 0; }
+
+    /**
+     * removeCard
+     * Removes card after set is played
+     * @param suit card to be removed
+     * @return true (able to remove) or false (not able to remove)
+     */
+    public void removeCard(String suit, int val) {
+        for(int i = 0; i < playerHand.size(); i++){
+            if(playerHand.get(i).getValue() == val && playerHand.get(i).getSuit().equals(suit)){
+                playerHand.remove(i);
+            }
+        }
+    }
 }
