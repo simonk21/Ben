@@ -51,6 +51,7 @@ public class PresidentDumbAI extends GameComputerPlayer {
             }
             else{
                 if(savedState.getCurrentSet().get(0).getValue() >= temp.get(0).getValue()){
+                    sleep(1000);
                     game.sendAction(new PresidentPassAction(this));
                 }
                 else{
